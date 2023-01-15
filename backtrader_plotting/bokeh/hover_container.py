@@ -63,10 +63,10 @@ class HoverContainer(metaclass=bt.MetaParams):
                 top = True
                 # prefix with data name if we got multiple datas
                 if self.p.is_multidata and foreign:
-                    if isinstance(src_obj, bt.Indicator):
-                        prefix = label_resolver.datatarget2label(src_obj.datas) + " - "
-                    elif isinstance(src_obj, bt.AbstractDataBase):
-                        prefix = label_resolver.datatarget2label([src_obj]) + " - "
+                    #if isinstance(src_obj, bt.Indicator):
+                     #   prefix = label_resolver.datatarget2label(src_obj.datas) + " - "
+                    #elif isinstance(src_obj, bt.AbstractDataBase):
+                     #   prefix = label_resolver.datatarget2label([src_obj]) + " - "
                     top = False
 
                 item = (prefix + label, tmpl)
@@ -79,7 +79,7 @@ class HoverContainer(metaclass=bt.MetaParams):
         for t in itertools.chain(tooltips_top, tooltips_bottom):
             hovertool.tooltips.append(t)
 
-    def apply_hovertips(self, figures: List['FigureEnvelope']) -> None:
+    def apply_hovertips(self, figures) -> None:
         """Add hovers to to all figures from the figures list"""
         for f in figures:
             for t in f.bfigure.tools:

@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from typing import List, Tuple
+from typing import List, Tuple, Union
 from enum import Enum
 
 import backtrader as bt
@@ -53,7 +53,7 @@ class TableGenerator(object):
         else:
             raise Exception(f"Unsupported ColumnDataType: '{ctype}'")
 
-    def get_analyzers_tables(self, analyzer: bt.analyzers.Analyzer) -> (Paragraph, List[DataTable]):
+    def get_analyzers_tables(self, analyzer: bt.analyzers.Analyzer) -> Union[Paragraph, List[DataTable]]:
         """Return a header for this analyzer and one *or more* data tables."""
         if hasattr(analyzer, 'get_analysis_table'):
             title, table_columns_list = analyzer.get_analysis_table()

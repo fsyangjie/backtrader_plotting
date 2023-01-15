@@ -51,7 +51,7 @@ class Scheme(_BtPlotScheme):
 
         self.analyzer_tab_num_cols = 2
         self.plotaspectratio = 3.0
-        self.plot_sizing_mode = "scale_width"
+        self.plot_sizing_mode = "fixed"
 
         self.toolbar_location = "right"
 

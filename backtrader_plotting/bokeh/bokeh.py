@@ -47,6 +47,7 @@ if 'ipykernel' in sys.modules:
 class FigurePage(object):
     def __init__(self, obj: Union[bt.Strategy, bt.OptReturn]):
         self.figures: List[Figure] = []
+
         self.strategy: Optional[bt.Strategy] = obj if isinstance(obj, bt.Strategy) else None
         self.cds: Optional[ColumnDataSource] = ColumnDataSource(data=dict(datetime=np.array([], dtype=np.datetime64), index=np.array([], np.float64)))
         self.analyzers: List[bt.Analyzer, bt.MetaStrategy, Optional[bt.AutoInfoClass]] = []
@@ -296,7 +297,9 @@ class Bokeh(metaclass=bt.MetaParams):
 
     # region Generator Methods
     def generate_model_panels(self, fp: FigurePage, tradingdomain=None) -> List[Panel]:
-        observers = [x for x in fp.figures if isinstance(x.master, bt.Observer)]
+        brokers = [x for x in fp.figures if isinstance(x.master, bt.observers.Broker)]
+        trades = [x for x in fp.figures if isinstance(x.master, bt.observers.Trades)]
+        observers = [brokers[0]] + trades
         datas = [x for x in fp.figures if isinstance(x.master, bt.AbstractDataBase)]
         inds = [x for x in fp.figures if isinstance(x.master, bt.Indicator)]
 
@@ -338,8 +341,9 @@ class Bokeh(metaclass=bt.MetaParams):
 
             g = gridplot([[x.bfigure] for x in objects],
                          toolbar_options={'logo': None},
-                         toolbar_location=self.p.scheme.toolbar_location,
+                         toolbar_location='left',
                          sizing_mode=self.p.scheme.plot_sizing_mode,
+                         plot_width=1000, plot_height=1000
                          )
             panels.append(Panel(title=panel_title, child=g))
             self._on_post_generate_tab(panel_title, objects)
@@ -366,11 +370,11 @@ class Bokeh(metaclass=bt.MetaParams):
             panels.append(panel_analyzer)
 
         # append meta tab
-        if not self._is_optreturn:
-            assert figurepage.strategy is not None
-            meta = Div(text=metadata.get_metadata_div(figurepage.strategy, self.p.scheme.strategysrc))
-            metapanel = Panel(child=meta, title="Meta")
-            panels.append(metapanel)
+        #if not self._is_optreturn:
+         #   assert figurepage.strategy is not None
+          #  meta = Div(text=metadata.get_metadata_div(figurepage.strategy, self.p.scheme.strategysrc))
+           # metapanel = Panel(child=meta, title="Meta")
+            #panels.append(metapanel)
 
         model = Tabs(tabs=panels)
 
@@ -399,7 +403,7 @@ class Bokeh(metaclass=bt.MetaParams):
     def _output_plot_file(self, model, idx, filename=None, template="basic.html.j2"):
         if filename is None:
             tmpdir = tempfile.gettempdir()
-            filename = os.path.join(tmpdir, f"bt_bokeh_plot_{idx}.html")
+            filename = os.path.join(tmpdir, f"bt_bokeh_plot_0.html")
 
         env = Environment(loader=PackageLoader('backtrader_plotting.bokeh', 'templates'))
         templ = env.get_template(template)
@@ -496,10 +500,13 @@ class Bokeh(metaclass=bt.MetaParams):
         """Called by backtrader to plot either a strategy or an optimization result."""
 
         # prepare new FigurePage
-        fp = FigurePage(obj)
-        self.figurepages.append(fp)
-        self._current_fig_idx = len(self.figurepages) - 1
-        self._is_optreturn = isinstance(obj, bt.OptReturn)
+        if len(self.figurepages) == 0:
+            fp = FigurePage(obj)
+            self.figurepages.append(fp)
+            self._current_fig_idx = len(self.figurepages) - 1
+            self._is_optreturn = isinstance(obj, bt.OptReturn)
+        else:
+            fp = self.figurepages[0]
 
         if isinstance(obj, bt.Strategy):
             # only configure plotting for regular backtesting (not for optimization)

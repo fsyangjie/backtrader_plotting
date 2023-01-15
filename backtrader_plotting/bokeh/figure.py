@@ -18,10 +18,12 @@ from backtrader_plotting.bokeh.marker import build_marker_call
 from backtrader_plotting.bokeh.hover_container import HoverContainer
 from  backtrader_plotting.bokeh import labelizer
 
+from backtrader.observers.broker import Broker
+from backtrader.observers.trades import Trades
 
 class Figure(object):
     """Class that wraps a *single* figure."""
-    _tools = "pan,wheel_zoom,box_zoom,reset"
+    _tools = ""
 
     def __init__(self, strategy: bt.Strategy, cds: ColumnDataSource, hoverc: HoverContainer, start, end, scheme, master, plotorder):
         self._strategy = strategy
@@ -43,11 +45,18 @@ class Figure(object):
 
     def _init_figure(self):
         # plot height will be set later
-        f = figure(tools=Figure._tools,
-                   x_axis_type='linear',
-                   aspect_ratio=self._scheme.plotaspectratio,
-                   output_backend="webgl",
-                   )
+        if isinstance(self.master, Broker) |  isinstance(self.master, Trades):
+            f = figure(tools=Figure._tools,
+                    x_axis_type='linear',
+                    aspect_ratio=7,
+                    output_backend="webgl"
+                    )
+        else:
+            f = figure(tools=Figure._tools,
+                    x_axis_type='linear',
+                    aspect_ratio=self._scheme.plotaspectratio,
+                    output_backend="webgl"
+                    )
 
         f.y_range.range_padding = self._scheme.y_range_padding
 
