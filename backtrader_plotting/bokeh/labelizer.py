@@ -77,7 +77,7 @@ def label(obj, targets=True):
         op = _operator2string(obj.operation)
         primary = f'LineOp{op}'
     elif isinstance(obj, bt.linebuffer._LineDelay):
-        primary = _label_datafeed(obj.a._owner) + '^' + _get_line_alias(obj.a, obj.a._owner) + f'({obj.ago})'
+        primary = _label_datafeed(obj._owner) + '^' + _get_line_alias(obj.a, obj._owner) + f'({obj.ago})'
     elif isinstance(obj, bt.LineSeriesStub):
         primary = line2str(obj.lines[0], obj._owner)
     elif isinstance(obj, bt.AbstractDataBase):
