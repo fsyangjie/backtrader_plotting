@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 
 from bokeh.models import ColumnDataSource, Model
-from bokeh.models.widgets import Panel, Tabs
+from bokeh.models.layouts import TabPanel as Panel, Tabs
 from bokeh.layouts import column, gridplot
 
 from bokeh.embed import file_html
@@ -343,7 +343,7 @@ class Bokeh(metaclass=bt.MetaParams):
                          toolbar_options={'logo': None},
                          toolbar_location='left',
                          sizing_mode=self.p.scheme.plot_sizing_mode,
-                         plot_width=1000, plot_height=1000
+                         width=1000, height=1000
                          )
             panels.append(Panel(title=panel_title, child=g))
             self._on_post_generate_tab(panel_title, objects)

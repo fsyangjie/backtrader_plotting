@@ -6,7 +6,8 @@ from typing import Any, Callable, Dict, List
 
 import backtrader as bt
 
-from bokeh.models.widgets import Panel, Tabs, Slider, Button
+from bokeh.models.layouts import TabPanel as Panel, Tabs
+from bokeh.models.widgets import Slider, Button
 from bokeh.layouts import column, row
 from bokeh.io import curdoc
 from bokeh.models.widgets import Div, Select
