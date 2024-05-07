@@ -76,8 +76,8 @@ class HoverContainer(metaclass=bt.MetaParams):
                     tooltips_bottom.append(item)
 
         # first apply all top hover then all bottoms
-        for t in itertools.chain(tooltips_top, tooltips_bottom):
-            hovertool.tooltips.append(t)
+        #for t in itertools.chain(tooltips_top, tooltips_bottom):
+         #   hovertool.tooltips.append(t)
 
     def apply_hovertips(self, figures) -> None:
         """Add hovers to to all figures from the figures list"""
