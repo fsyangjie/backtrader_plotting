@@ -7,9 +7,9 @@ import backtrader as bt
 
 import pandas as pd
 
-from bokeh.models import Span
+from bokeh.models import Span, Scatter
 from bokeh.plotting import figure
-from bokeh.models import HoverTool, CrosshairTool, LinearAxis, DataRange1d, Renderer, ColumnDataSource, FuncTickFormatter, DatetimeTickFormatter
+from bokeh.models import HoverTool, CrosshairTool, LinearAxis, DataRange1d, Renderer, ColumnDataSource, CustomJSTickFormatter, DatetimeTickFormatter
 from bokeh.models.formatters import NumeralTickFormatter
 
 from backtrader_plotting.bokeh.utils import convert_color, sanitize_source_name, get_bar_width, convert_linestyle
@@ -81,17 +81,17 @@ class Figure(object):
 
         # mechanism for proper date axis without gaps, thanks!
         # https://groups.google.com/a/continuum.io/forum/#!topic/bokeh/t3HkalO4TGA
-        f.xaxis.formatter = FuncTickFormatter(
+        f.xaxis.formatter = CustomJSTickFormatter(
             args=dict(
                 axis=f.xaxis[0],
-                formatter=DatetimeTickFormatter(days=[self._scheme.axis_tickformat_days],
-                                                hourmin=[self._scheme.axis_tickformat_hourmin],
-                                                hours=[self._scheme.axis_tickformat_hours],
-                                                minsec=[self._scheme.axis_tickformat_minsec],
-                                                minutes=[self._scheme.axis_tickformat_minutes],
-                                                months=[self._scheme.axis_tickformat_months],
-                                                seconds=[self._scheme.axis_tickformat_seconds],
-                                                years=[self._scheme.axis_tickformat_years],
+                formatter=DatetimeTickFormatter(days=self._scheme.axis_tickformat_days,
+                                                hourmin=self._scheme.axis_tickformat_hourmin,
+                                                hours=self._scheme.axis_tickformat_hours,
+                                                minsec=self._scheme.axis_tickformat_minsec,
+                                                minutes=self._scheme.axis_tickformat_minutes,
+                                                months=self._scheme.axis_tickformat_months,
+                                                seconds=self._scheme.axis_tickformat_seconds,
+                                                years=self._scheme.axis_tickformat_years,
                                                 ),
                 source=self._cds,
             ),
@@ -417,7 +417,6 @@ class Figure(object):
                 raise Exception(f"Unknown plotting method '{method}'")
 
             renderer = glyph_fnc("index", source=self._cds, **kwglyphs)
-
             # iterate again to generate area plot data
             for fattr, y1, y2, fcol, falpha, fop in get_ind_areas(obj, lineidx):
                 self._add_column(y1, np.float64)

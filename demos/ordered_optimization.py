@@ -31,7 +31,7 @@ if __name__ == '__main__':
     cerebro = bt.Cerebro(maxcpus=1)
 
     data = bt.feeds.YahooFinanceCSVData(
-        dataname="datas/orcl-1995-2014.txt",
+        dataname="demos/datas/orcl-1995-2014.txt",
         fromdate=datetime.datetime(2000, 1, 1),
         todate=datetime.datetime(2001, 2, 28),
         reverse=False,
