@@ -7,7 +7,7 @@ import backtrader as bt
 
 import pandas as pd
 
-from bokeh.models import Span, Scatter
+from bokeh.models import Span
 from bokeh.plotting import figure
 from bokeh.models import HoverTool, CrosshairTool, LinearAxis, DataRange1d, Renderer, ColumnDataSource, CustomJSTickFormatter, DatetimeTickFormatter
 from bokeh.models.formatters import NumeralTickFormatter
