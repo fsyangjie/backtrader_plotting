@@ -343,7 +343,7 @@ class Bokeh(metaclass=bt.MetaParams):
                          toolbar_options={'logo': None},
                          toolbar_location='left',
                          sizing_mode=self.p.scheme.plot_sizing_mode,
-                         width=1000, height=1000
+                         width=1000, height=300
                          )
             panels.append(Panel(title=panel_title, child=g))
             self._on_post_generate_tab(panel_title, objects)
