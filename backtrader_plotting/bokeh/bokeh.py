@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 
 from bokeh.models import ColumnDataSource, Model
-from bokeh.models.layouts import TabPanel as Panel, Tabs
+from bokeh.models.layouts import Panel, Tabs
 from bokeh.layouts import column, gridplot
 
 from bokeh.embed import file_html
