@@ -23,7 +23,8 @@ from backtrader.observers.trades import Trades
 
 class Figure(object):
     """Class that wraps a *single* figure."""
-    _tools = ""
+    _tools = "pan,wheel_zoom,box_zoom,reset"
+    
 
     def __init__(self, strategy: bt.Strategy, cds: ColumnDataSource, hoverc: HoverContainer, start, end, scheme, master, plotorder):
         self._strategy = strategy
