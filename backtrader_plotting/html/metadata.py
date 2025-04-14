@@ -66,7 +66,7 @@ def _get_strategy(strategy: bt.Strategy, include_src=True) -> str:
 
     if include_src:
         md += 'Source Code:\n'
-        md += f'\n```\n{inspect.getsource(strategy.__class__)}\n```\n\n'
+        md += f'\n```python\n{inspect.getsource(strategy.__class__)}\n```\n\n'
 
     return md
 
