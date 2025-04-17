@@ -14,7 +14,7 @@ import numpy as np
 
 import pandas as pd
 
-from bokeh.models import ColumnDataSource, Model
+from bokeh.models import ColumnDataSource, Model,CrosshairTool,Span
 from bokeh.models.layouts import TabPanel as Panel, Tabs
 from bokeh.layouts import column, gridplot
 
@@ -222,9 +222,11 @@ class Bokeh(metaclass=bt.MetaParams):
         hoverc = HoverContainer(hover_tooltip_config=self.p.scheme.hover_tooltip_config, is_multidata=len(strategy.datas) > 1)
 
         figure_envs: List[Figure] = []
+
+        ch = CrosshairTool(overlay=[Span(dimension='height'),Span(dimension='width')],line_color=self.p.scheme.crosshair_line_color, dimensions="both")
         for master, slaves in data_graph.items():
             plotorder = getattr(master.plotinfo, 'plotorder', 0)
-            figureenv = Figure(strategy, self._cur_figurepage.cds, hoverc, start, end, self.p.scheme, master, plotorder)
+            figureenv = Figure(strategy, self._cur_figurepage.cds, hoverc, start, end, self.p.scheme, master, plotorder,ch)
 
             figureenv.plot(master)
 

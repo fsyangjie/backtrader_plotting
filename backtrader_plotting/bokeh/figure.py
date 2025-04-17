@@ -26,7 +26,7 @@ class Figure(object):
     _tools = "pan,wheel_zoom,box_zoom,reset"
     
 
-    def __init__(self, strategy: bt.Strategy, cds: ColumnDataSource, hoverc: HoverContainer, start, end, scheme, master, plotorder):
+    def __init__(self, strategy: bt.Strategy, cds: ColumnDataSource, hoverc: HoverContainer, start, end, scheme, master, plotorder,crosshairTool=None):
         self._strategy = strategy
         self._cds: ColumnDataSource = cds
         self._scheme = scheme
@@ -42,9 +42,9 @@ class Figure(object):
         self.plotorder = plotorder
         self.datas = []  # list of all datas that have been plotted to this figure
         self._tradingdomain = None
-        self._init_figure()
+        self._init_figure(crosshairTool)
 
-    def _init_figure(self):
+    def _init_figure(self,crosshairTool):
         # plot height will be set later
         if isinstance(self.master, Broker) |  isinstance(self.master, Trades):
             f = figure(tools=Figure._tools,
@@ -120,8 +120,11 @@ class Figure(object):
                 return labels[index];
             """
             )
-
-        ch = CrosshairTool(line_color=self._scheme.crosshair_line_color)
+        ch=None
+        if crosshairTool:
+          ch= crosshairTool
+        else:
+            ch = CrosshairTool(line_color=self._scheme.crosshair_line_color,dimensions="both")
         f.tools.append(ch)
 
         h = HoverTool(tooltips=[('Time', f'@datetime{{{self._scheme.hovertool_timeformat}}}')],
