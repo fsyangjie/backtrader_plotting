@@ -41,15 +41,15 @@ class TableGenerator(object):
 
     def _get_formatter(self,ctype: ColummDataType):
         if ctype == ColummDataType.FLOAT:
-            return NumberFormatter(format=self._scheme.number_format)
+            return NumberFormatter(format=self._scheme.number_format,text_align='right')
         elif ctype == ColummDataType.INT:
-            return NumberFormatter()
+            return NumberFormatter(text_align='right')
         elif ctype == ColummDataType.DATETIME:
             return DateFormatter(format="%c")
         elif ctype == ColummDataType.STRING:
             return StringFormatter()
         elif ctype == ColummDataType.PERCENTAGE:
-            return NumberFormatter(format="0.000 %")
+            return NumberFormatter(format="0.000 %",text_align='right')
         else:
             raise Exception(f"Unsupported ColumnDataType: '{ctype}'")
 
