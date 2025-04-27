@@ -408,7 +408,9 @@ class Figure(object):
                 kwglyphs['line_width'] = 1
                 kwglyphs['color'] = color
                 kwglyphs['y'] = source_id
-
+                if obj.size() > 1:
+                    kwglyphs['legend_label'] = indlabel +'\n'+linealias
+                    
                 linestyle = getattr(lineplotinfo, "ls", None)
                 if linestyle is not None:
                     kwglyphs['line_dash'] = convert_linestyle(linestyle)
@@ -441,12 +443,20 @@ class Figure(object):
                 self._add_hover_renderer(renderer)
 
             hover_label_suffix = f" - {linealias}" if obj.size() > 1 else ""  # we need no suffix if there is just one line in the indicator anyway
-            hover_label = indlabel + hover_label_suffix
+            hover_label = self._get_hover_prefix(indlabel) + hover_label_suffix
             hover_data = f"@{source_id}{{{self._scheme.number_format}}}"
             self._hoverc.add_hovertip(hover_label, hover_data, obj)
 
         self._set_yticks(obj)
         self._plot_hlines(obj)
+    
+    def _get_hover_prefix(self, label):
+        if label is None:
+            return ""
+        i=  label.index('(')
+        if i > 0:
+            label = label[:i].strip()
+        return label 
 
     def _set_yticks(self, obj):
         yticks = obj.plotinfo._get('plotyticks', [])
