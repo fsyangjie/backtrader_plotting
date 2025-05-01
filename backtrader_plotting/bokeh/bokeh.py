@@ -340,11 +340,26 @@ class Bokeh(metaclass=bt.MetaParams):
                 return
 
             Bokeh._sort_plotobjects(objects)
-            g = gridplot([[x.bfigure] for x in objects],
+            
+            figures_list = []
+            for i,x in enumerate(objects):
+                # 每个图形单独放在一个子列表中
+                # x.bfigure.width = self.p.scheme.plot_width
+                if self.p.scheme.plot_height is not None:
+                    height = self.p.scheme.plot_height
+                    if i>0:
+                        height = int(height*0.75)
+                    x.bfigure.height = height
+                    figures_list.append([x.bfigure])
+                
+                
+            
+            g = gridplot(figures_list,
                          toolbar_options={'logo': None},
                          toolbar_location='left',
+                         
                          sizing_mode=self.p.scheme.plot_sizing_mode,
-                         width=self.p.scheme.plot_width, height=self.p.scheme.plot_height
+                         width=self.p.scheme.plot_width
                          )
             panels.append(Panel(title=panel_title, child=g))
             self._on_post_generate_tab(panel_title, objects)

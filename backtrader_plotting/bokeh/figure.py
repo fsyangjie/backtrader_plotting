@@ -375,6 +375,7 @@ class Figure(object):
             method = lineplotinfo._get('_method', 'line')
 
             color = getattr(lineplotinfo, 'color', None)
+            alpha = getattr(lineplotinfo, 'alpha', 1.0)
             if color is None:
                 if not lineplotinfo._get('_samecolor', False):
                     self._nextcolor()
@@ -398,8 +399,9 @@ class Figure(object):
                 glyph_fnc = getattr(self.bfigure, fnc_name)
             elif method == "bar":
                 kwglyphs['bottom'] = 0
-                kwglyphs['line_color'] = 'black'
+                kwglyphs['line_color'] = color
                 kwglyphs['fill_color'] = color
+                kwglyphs['fill_alpha'] = alpha
                 kwglyphs['width'] = get_bar_width()
                 kwglyphs['top'] = source_id
 
