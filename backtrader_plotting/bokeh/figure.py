@@ -455,9 +455,10 @@ class Figure(object):
     def _get_hover_prefix(self, label):
         if label is None:
             return ""
-        i=  label.index('(')
-        if i > 0:
-            label = label[:i].strip()
+        if '(' in label:
+            i=  label.index('(')
+            if i > 0:
+                label = label[:i].strip()
         return label 
 
     def _set_yticks(self, obj):
